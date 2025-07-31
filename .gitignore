@@ -1,0 +1,35 @@
+# Uploaded files
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Configuration files (should be customized per environment)
+# config/config.php
+
+# Temporary files
+tmp/
+temp/
+
+# Logs
+*.log
+logs/
+
+# Database backups
+*.sql.bak
+*.sql.backup
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Cache files
+cache/
+*.cache
+
+# Environment files
+.env
+.env.local
