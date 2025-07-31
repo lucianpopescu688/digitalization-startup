@@ -1,0 +1,306 @@
+<%- include('../layout', { body: %>
+<div class="page-container">
+    <div class="page-header">
+        <h1><%= video.title || video.original_name %></h1>
+        <p>Uploaded by <%= video.username || 'Unknown' %> on <%= new Date(video.upload_date).toLocaleDateString() %></p>
+    </div>
+
+    <div class="video-player-container">
+        <div class="video-player">
+            <video 
+                controls 
+                preload="metadata"
+                style="width: 100%; max-height: 600px; background: #000;"
+                poster="/images/video-placeholder.png"
+            >
+                <source src="/uploads/<%= video.filename %>" type="<%= video.mime_type %>">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <div class="video-controls">
+            <div class="video-actions">
+                <% if (user.role === 'admin' || video.user_id === user.id) { %>
+                <a href="/videos/<%= video.id %>/edit" class="btn btn-secondary">
+                    <span class="btn-icon">✏️</span>
+                    Edit Details
+                </a>
+                <% } %>
+                
+                <a href="/videos/<%= video.id %>/download" class="btn btn-primary">
+                    <span class="btn-icon">⬇️</span>
+                    Download
+                </a>
+                
+                <% if (user.role === 'admin' || video.user_id === user.id) { %>
+                <button onclick="deleteVideo()" class="btn btn-danger">
+                    <span class="btn-icon">🗑️</span>
+                    Delete
+                </button>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <div class="video-details-container">
+        <div class="video-info-panel">
+            <div class="video-meta">
+                <div class="meta-section">
+                    <h3>Video Information</h3>
+                    <div class="meta-grid">
+                        <div class="meta-item">
+                            <span class="meta-label">Original Filename:</span>
+                            <span class="meta-value"><%= video.original_name %></span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">File Size:</span>
+                            <span class="meta-value">
+                                <% if (video.file_size) { %>
+                                <%= (video.file_size / 1024 / 1024).toFixed(2) %> MB
+                                <% } else { %>
+                                Unknown
+                                <% } %>
+                            </span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Format:</span>
+                            <span class="meta-value"><%= video.mime_type %></span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Upload Date:</span>
+                            <span class="meta-value"><%= new Date(video.upload_date).toLocaleString() %></span>
+                        </div>
+                        <% if (video.duration) { %>
+                        <div class="meta-item">
+                            <span class="meta-label">Duration:</span>
+                            <span class="meta-value">
+                                <%= Math.floor(video.duration / 60) %>:<%= (video.duration % 60).toString().padStart(2, '0') %>
+                            </span>
+                        </div>
+                        <% } %>
+                        <div class="meta-item">
+                            <span class="meta-label">Uploaded by:</span>
+                            <span class="meta-value"><%= video.username || 'Unknown' %></span>
+                        </div>
+                        <% if (video.company_name) { %>
+                        <div class="meta-item">
+                            <span class="meta-label">Company:</span>
+                            <span class="meta-value"><%= video.company_name %></span>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+
+                <% if (video.description) { %>
+                <div class="meta-section">
+                    <h3>Description</h3>
+                    <p class="video-description"><%= video.description %></p>
+                </div>
+                <% } %>
+
+                <% if (video.tags) { %>
+                <div class="meta-section">
+                    <h3>Tags</h3>
+                    <div class="video-tags">
+                        <% video.tags.split(',').forEach(tag => { %>
+                        <span class="tag"><%= tag.trim() %></span>
+                        <% }) %>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </div>
+
+        <div class="video-sidebar">
+            <div class="sidebar-section">
+                <h3>Quick Actions</h3>
+                <ul class="action-list">
+                    <li><a href="/dashboard">Back to Dashboard</a></li>
+                    <li><a href="/dashboard/search">Search Videos</a></li>
+                    <li><a href="/videos/upload">Upload New Video</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Video Quality</h3>
+                <p>This video has been digitized from <%= video.original_name.includes('VHS') ? 'VHS' : 
+                   video.original_name.includes('Beta') ? 'Betamax' : 
+                   video.original_name.includes('DV') ? 'DV Cassette' : 'analog' %> format.</p>
+                <p><small>For best quality, view in a modern browser with hardware acceleration enabled.</small></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h3>Confirm Delete</h3>
+        <p>Are you sure you want to delete "<%= video.title || video.original_name %>"?</p>
+        <p><strong>This action cannot be undone.</strong></p>
+        <div class="modal-actions">
+            <button onclick="closeDeleteModal()" class="btn btn-secondary">Cancel</button>
+            <button onclick="confirmDelete()" class="btn btn-danger">Delete Video</button>
+        </div>
+    </div>
+</div>
+
+<script>
+function deleteVideo() {
+    document.getElementById('deleteModal').style.display = 'flex';
+}
+
+function closeDeleteModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+}
+
+function confirmDelete() {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/videos/<%= video.id %>/delete';
+    document.body.appendChild(form);
+    form.submit();
+}
+
+// Close modal when clicking outside
+document.getElementById('deleteModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeDeleteModal();
+    }
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeDeleteModal();
+    }
+});
+</script>
+
+<style>
+.video-player-container {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+    margin-bottom: 32px;
+}
+
+.video-player {
+    position: relative;
+    background: #000;
+}
+
+.video-controls {
+    padding: 20px;
+    background: #f7fafc;
+}
+
+.video-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.video-details-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 32px;
+}
+
+.video-info-panel {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+.meta-section {
+    padding: 24px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.meta-section:last-child {
+    border-bottom: none;
+}
+
+.meta-section h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #2d3748;
+}
+
+.meta-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.meta-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.meta-item:last-child {
+    border-bottom: none;
+}
+
+.meta-label {
+    font-weight: 500;
+    color: #718096;
+}
+
+.meta-value {
+    color: #2d3748;
+    font-weight: 500;
+}
+
+.video-description {
+    color: #4a5568;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.video-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.sidebar-section {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+}
+
+.sidebar-section h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #2d3748;
+}
+
+@media (max-width: 768px) {
+    .video-details-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .video-actions {
+        justify-content: center;
+    }
+    
+    .meta-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+}
+</style>
+<% }) %>

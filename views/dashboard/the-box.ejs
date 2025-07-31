@@ -1,0 +1,520 @@
+<%- include('../layout', { body: %>
+<div class="page-container">
+    <div class="page-header">
+        <h1>The Box</h1>
+        <p>Next-generation digitalization hardware - Coming Soon!</p>
+    </div>
+
+    <div class="product-showcase">
+        <div class="product-hero">
+            <div class="product-image">
+                <div class="product-placeholder">
+                    <div class="product-icon">📦</div>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+            </div>
+            
+            <div class="product-info">
+                <h2>Introducing The Box</h2>
+                <p class="product-tagline">Professional-grade, all-in-one digitalization station for your office</p>
+                
+                <div class="product-highlights">
+                    <div class="highlight-item">
+                        <div class="highlight-icon">⚡</div>
+                        <div class="highlight-text">
+                            <strong>Lightning Fast</strong>
+                            <span>10x faster than traditional methods</span>
+                        </div>
+                    </div>
+                    
+                    <div class="highlight-item">
+                        <div class="highlight-icon">🎯</div>
+                        <div class="highlight-text">
+                            <strong>AI-Enhanced Quality</strong>
+                            <span>Automatic noise reduction and color correction</span>
+                        </div>
+                    </div>
+                    
+                    <div class="highlight-item">
+                        <div class="highlight-icon">📡</div>
+                        <div class="highlight-text">
+                            <strong>Cloud Integration</strong>
+                            <span>Direct upload to your digital archive</span>
+                        </div>
+                    </div>
+                    
+                    <div class="highlight-item">
+                        <div class="highlight-icon">🔧</div>
+                        <div class="highlight-text">
+                            <strong>Plug & Play</strong>
+                            <span>No technical expertise required</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cta-section">
+                    <button class="btn btn-primary btn-large" onclick="showInterestForm()">
+                        Express Interest
+                    </button>
+                    <p class="cta-note">Be the first to know when The Box becomes available</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-details">
+            <div class="detail-section">
+                <h3>Technical Specifications</h3>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <span class="spec-label">Supported Formats:</span>
+                        <span class="spec-value">VHS, Betamax, DV, Hi8, Digital8, MiniDV</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Output Quality:</span>
+                        <span class="spec-value">Up to 4K resolution enhancement</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Processing Speed:</span>
+                        <span class="spec-value">Real-time capture + 2x enhancement</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Storage:</span>
+                        <span class="spec-value">2TB internal + cloud integration</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Connectivity:</span>
+                        <span class="spec-value">Wi-Fi 6, Ethernet, USB-C</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Dimensions:</span>
+                        <span class="spec-value">12" × 8" × 6" (compact design)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h3>Key Features</h3>
+                <div class="features-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">🤖</div>
+                        <div class="feature-content">
+                            <strong>AI-Powered Enhancement</strong>
+                            <p>Automatically removes noise, adjusts colors, and stabilizes shaky footage using advanced machine learning algorithms.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">📱</div>
+                        <div class="feature-content">
+                            <strong>Mobile App Control</strong>
+                            <p>Monitor progress, schedule transfers, and manage your archive directly from your smartphone or tablet.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">🔒</div>
+                        <div class="feature-content">
+                            <strong>Enterprise Security</strong>
+                            <p>Bank-level encryption ensures your precious memories and important archives remain completely secure.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">⚙️</div>
+                        <div class="feature-content">
+                            <strong>Automated Workflow</strong>
+                            <p>Set it and forget it - The Box handles the entire digitalization process from start to finish.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h3>Perfect For</h3>
+                <div class="use-cases">
+                    <div class="use-case">
+                        <div class="use-case-icon">🏢</div>
+                        <strong>Businesses</strong>
+                        <p>Archive training videos, presentations, and company history</p>
+                    </div>
+                    
+                    <div class="use-case">
+                        <div class="use-case-icon">🏛️</div>
+                        <strong>Institutions</strong>
+                        <p>Preserve historical footage and educational content</p>
+                    </div>
+                    
+                    <div class="use-case">
+                        <div class="use-case-icon">👨‍💼</div>
+                        <strong>Service Providers</strong>
+                        <p>Offer premium digitalization services to your clients</p>
+                    </div>
+                    
+                    <div class="use-case">
+                        <div class="use-case-icon">👪</div>
+                        <strong>Families</strong>
+                        <p>Preserve precious memories and family history</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Interest Form Modal -->
+<div id="interestModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h3>Express Your Interest</h3>
+        <p>Be among the first to get The Box when it launches!</p>
+        
+        <form id="interestForm" class="interest-form">
+            <div class="form-group">
+                <label for="interest-email">Email Address</label>
+                <input 
+                    type="email" 
+                    id="interest-email" 
+                    name="email" 
+                    value="<%= user ? user.email : '' %>"
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="company-size">Company/Organization Size</label>
+                <select id="company-size" name="company_size">
+                    <option value="">Select size</option>
+                    <option value="individual">Individual/Family</option>
+                    <option value="small">Small Business (1-10 employees)</option>
+                    <option value="medium">Medium Business (11-50 employees)</option>
+                    <option value="large">Large Business (50+ employees)</option>
+                    <option value="enterprise">Enterprise (500+ employees)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="use-case">Primary Use Case</label>
+                <select id="use-case" name="use_case">
+                    <option value="">Select use case</option>
+                    <option value="personal">Personal/Family Archives</option>
+                    <option value="business">Business Content</option>
+                    <option value="service">Digitalization Service</option>
+                    <option value="education">Educational Institution</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="beta_testing" value="1">
+                    <span class="checkmark"></span>
+                    I'm interested in beta testing The Box
+                </label>
+            </div>
+            
+            <div class="modal-actions">
+                <button type="submit" class="btn btn-primary">Submit Interest</button>
+                <button type="button" onclick="closeInterestModal()" class="btn btn-secondary">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function showInterestForm() {
+    document.getElementById('interestModal').style.display = 'flex';
+}
+
+function closeInterestModal() {
+    document.getElementById('interestModal').style.display = 'none';
+}
+
+document.getElementById('interestForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // In a real application, this would submit to a backend endpoint
+    alert('Thank you for your interest! We\'ll contact you as soon as The Box is available.');
+    closeInterestModal();
+});
+
+// Close modal when clicking outside
+document.getElementById('interestModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeInterestModal();
+    }
+});
+</script>
+
+<style>
+.product-showcase {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.product-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 60px;
+    align-items: center;
+}
+
+.product-image {
+    text-align: center;
+}
+
+.product-placeholder {
+    position: relative;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    height: 300px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+}
+
+.product-icon {
+    font-size: 4rem;
+    color: white;
+}
+
+.coming-soon-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #e53e3e;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.product-info h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 16px;
+}
+
+.product-tagline {
+    font-size: 1.2rem;
+    color: #718096;
+    margin-bottom: 32px;
+    line-height: 1.6;
+}
+
+.product-highlights {
+    display: grid;
+    gap: 20px;
+    margin-bottom: 32px;
+}
+
+.highlight-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.highlight-icon {
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #edf2f7;
+    border-radius: 8px;
+}
+
+.highlight-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.highlight-text strong {
+    color: #2d3748;
+    font-weight: 600;
+}
+
+.highlight-text span {
+    color: #718096;
+    font-size: 14px;
+}
+
+.cta-section {
+    text-align: center;
+}
+
+.btn-large {
+    padding: 16px 32px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.cta-note {
+    margin-top: 12px;
+    color: #718096;
+    font-size: 14px;
+}
+
+.product-details {
+    display: grid;
+    gap: 40px;
+}
+
+.detail-section {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+}
+
+.detail-section h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: #2d3748;
+}
+
+.specs-grid {
+    display: grid;
+    gap: 16px;
+}
+
+.spec-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.spec-item:last-child {
+    border-bottom: none;
+}
+
+.spec-label {
+    font-weight: 500;
+    color: #4a5568;
+}
+
+.spec-value {
+    color: #2d3748;
+    font-weight: 500;
+    text-align: right;
+}
+
+.features-list {
+    display: grid;
+    gap: 24px;
+}
+
+.feature-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.feature-icon {
+    font-size: 1.5rem;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.feature-content strong {
+    display: block;
+    color: #2d3748;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.feature-content p {
+    color: #4a5568;
+    line-height: 1.6;
+}
+
+.use-cases {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+}
+
+.use-case {
+    text-align: center;
+    padding: 24px;
+    background: #f7fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.use-case-icon {
+    font-size: 2rem;
+    margin-bottom: 16px;
+}
+
+.use-case strong {
+    display: block;
+    color: #2d3748;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.use-case p {
+    color: #718096;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.interest-form {
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+    .product-hero {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    
+    .product-info {
+        text-align: center;
+    }
+    
+    .product-info h2 {
+        font-size: 2rem;
+    }
+    
+    .spec-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .spec-value {
+        text-align: left;
+    }
+    
+    .feature-item {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+    
+    .use-cases {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+<% }) %>

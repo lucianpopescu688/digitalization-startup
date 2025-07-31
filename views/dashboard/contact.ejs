@@ -1,0 +1,322 @@
+<%- include('../layout', { body: %>
+<div class="page-container">
+    <div class="page-header">
+        <h1>Contact Us</h1>
+        <p>Get in touch with our digitalization experts</p>
+    </div>
+
+    <div class="contact-container">
+        <div class="contact-form-section">
+            <div class="contact-form-card">
+                <h2>Send us a Message</h2>
+                <form action="/dashboard/contact" method="POST" class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            value="<%= user ? user.username : '' %>"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            value="<%= user ? user.email : '' %>"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">Select a topic</option>
+                            <option value="technical">Technical Support</option>
+                            <option value="billing">Billing Question</option>
+                            <option value="digitization">Digitization Services</option>
+                            <option value="feature">Feature Request</option>
+                            <option value="partnership">Partnership Inquiry</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea 
+                            id="message" 
+                            name="message" 
+                            rows="6" 
+                            placeholder="Please describe your question or request in detail..."
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="newsletter" value="1">
+                            <span class="checkmark"></span>
+                            I'd like to receive updates about new features and services
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full">Send Message</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="contact-info-section">
+            <div class="contact-info-card">
+                <h3>Get in Touch</h3>
+                <div class="contact-methods">
+                    <div class="contact-method">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-details">
+                            <strong>Email Support</strong>
+                            <span>support@digitalarchive.com</span>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">📞</div>
+                        <div class="contact-details">
+                            <strong>Phone Support</strong>
+                            <span>1-800-DIGITIZE</span>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">💬</div>
+                        <div class="contact-details">
+                            <strong>Live Chat</strong>
+                            <span>Available 9 AM - 6 PM EST</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="services-overview">
+                <h3>Our Services</h3>
+                <div class="service-list">
+                    <div class="service-item">
+                        <div class="service-icon">📼</div>
+                        <div class="service-info">
+                            <strong>VHS Digitization</strong>
+                            <span>Convert your VHS tapes to digital format</span>
+                        </div>
+                    </div>
+                    
+                    <div class="service-item">
+                        <div class="service-icon">📹</div>
+                        <div class="service-info">
+                            <strong>Betamax Conversion</strong>
+                            <span>Professional Betamax to digital transfer</span>
+                        </div>
+                    </div>
+                    
+                    <div class="service-item">
+                        <div class="service-icon">💾</div>
+                        <div class="service-info">
+                            <strong>DV Cassette Transfer</strong>
+                            <span>Digital Video cassette preservation</span>
+                        </div>
+                    </div>
+                    
+                    <div class="service-item">
+                        <div class="service-icon">☁️</div>
+                        <div class="service-info">
+                            <strong>Cloud Storage</strong>
+                            <span>Secure online archive management</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="support-hours">
+                <h3>Support Hours</h3>
+                <div class="hours-list">
+                    <div class="hours-item">
+                        <span class="day">Monday - Friday</span>
+                        <span class="time">9:00 AM - 6:00 PM EST</span>
+                    </div>
+                    <div class="hours-item">
+                        <span class="day">Saturday</span>
+                        <span class="time">10:00 AM - 4:00 PM EST</span>
+                    </div>
+                    <div class="hours-item">
+                        <span class="day">Sunday</span>
+                        <span class="time">Closed</span>
+                    </div>
+                </div>
+                <p class="emergency-note">For urgent technical issues, email support is monitored 24/7.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.contact-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+}
+
+.contact-form-card,
+.contact-info-card,
+.services-overview,
+.support-hours {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+}
+
+.contact-form-card h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: #2d3748;
+}
+
+.contact-info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.contact-info-card h3,
+.services-overview h3,
+.support-hours h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #2d3748;
+}
+
+.contact-methods,
+.service-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.contact-method,
+.service-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: #f7fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.contact-icon,
+.service-icon {
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #667eea;
+    border-radius: 8px;
+    color: white;
+}
+
+.contact-details,
+.service-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.contact-details strong,
+.service-info strong {
+    color: #2d3748;
+    font-weight: 600;
+}
+
+.contact-details span,
+.service-info span {
+    color: #718096;
+    font-size: 14px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #4a5568;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+.hours-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.hours-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.hours-item:last-child {
+    border-bottom: none;
+}
+
+.day {
+    font-weight: 500;
+    color: #2d3748;
+}
+
+.time {
+    color: #718096;
+    font-size: 14px;
+}
+
+.emergency-note {
+    margin-top: 16px;
+    padding: 12px;
+    background: #edf2f7;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #4a5568;
+    border-left: 3px solid #667eea;
+}
+
+@media (max-width: 768px) {
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-method,
+    .service-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+    
+    .hours-item {
+        flex-direction: column;
+        gap: 4px;
+        text-align: center;
+    }
+}
+</style>
+<% }) %>

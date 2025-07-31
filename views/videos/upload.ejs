@@ -1,0 +1,237 @@
+<%- include('../layout', { body: %>
+<div class="page-container">
+    <div class="page-header">
+        <h1>Upload Video</h1>
+        <p>Convert your old format archives to digital</p>
+    </div>
+
+    <div class="upload-container">
+        <form action="/videos/upload" method="POST" enctype="multipart/form-data" class="upload-form">
+            <div class="upload-section">
+                <div class="file-upload-area" id="uploadArea">
+                    <div class="upload-icon">📹</div>
+                    <h3>Choose video file or drag and drop</h3>
+                    <p>Supported formats: MP4, AVI, MOV, WMV</p>
+                    <p>Maximum file size: <%= Math.round((parseInt(process.env.MAX_FILE_SIZE) || 100 * 1024 * 1024) / 1024 / 1024) %>MB</p>
+                    <input type="file" name="video" id="videoFile" accept="video/*" required>
+                    <label for="videoFile" class="file-input-label">Select File</label>
+                </div>
+                
+                <div class="file-info" id="fileInfo" style="display: none;">
+                    <div class="file-preview">
+                        <span class="file-icon">🎬</span>
+                        <div class="file-details">
+                            <div class="file-name" id="fileName"></div>
+                            <div class="file-size" id="fileSize"></div>
+                        </div>
+                        <button type="button" class="remove-file" onclick="removeFile()">×</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-details">
+                <h3>Video Information</h3>
+                
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input 
+                        type="text" 
+                        id="title" 
+                        name="title" 
+                        placeholder="Enter video title (optional - will use filename if empty)"
+                        maxlength="200"
+                    >
+                    <small>Leave empty to use the original filename</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea 
+                        id="description" 
+                        name="description" 
+                        rows="4" 
+                        placeholder="Describe the content, date recorded, or any other relevant information"
+                        maxlength="1000"
+                    ></textarea>
+                    <small>Optional - help others understand what this video contains</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="tags">Tags</label>
+                    <input 
+                        type="text" 
+                        id="tags" 
+                        name="tags" 
+                        placeholder="family, vacation, wedding, 1990s, etc. (comma-separated)"
+                        maxlength="500"
+                    >
+                    <small>Separate multiple tags with commas</small>
+                </div>
+            </div>
+
+            <div class="upload-actions">
+                <button type="submit" class="btn btn-primary" id="uploadBtn" disabled>
+                    <span class="btn-icon">⬆️</span>
+                    Upload Video
+                </button>
+                <a href="/dashboard" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+
+        <div class="upload-tips">
+            <h3>Tips for Better Results</h3>
+            <ul>
+                <li>📁 Use descriptive titles and tags to make videos easier to find</li>
+                <li>📝 Add detailed descriptions for historical context</li>
+                <li>🎯 Tag videos with dates, people, and events mentioned</li>
+                <li>📱 Larger files may take longer to upload - be patient</li>
+                <li>💾 Keep original files as backup until upload is confirmed</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Upload Progress Modal -->
+    <div id="uploadModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>Uploading Video...</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p id="uploadStatus">Preparing upload...</p>
+            <p><small>Please don't close this page while uploading</small></p>
+        </div>
+    </div>
+</div>
+
+<script>
+const uploadArea = document.getElementById('uploadArea');
+const fileInput = document.getElementById('videoFile');
+const fileInfo = document.getElementById('fileInfo');
+const fileName = document.getElementById('fileName');
+const fileSize = document.getElementById('fileSize');
+const uploadBtn = document.getElementById('uploadBtn');
+const uploadForm = document.querySelector('.upload-form');
+
+// Drag and drop functionality
+uploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea.classList.add('dragover');
+});
+
+uploadArea.addEventListener('dragleave', () => {
+    uploadArea.classList.remove('dragover');
+});
+
+uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+    
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        fileInput.files = files;
+        handleFileSelect();
+    }
+});
+
+// File input change
+fileInput.addEventListener('change', handleFileSelect);
+
+function handleFileSelect() {
+    const file = fileInput.files[0];
+    if (file) {
+        // Check file type
+        if (!file.type.startsWith('video/')) {
+            alert('Please select a video file');
+            fileInput.value = '';
+            return;
+        }
+
+        // Check file size
+        const maxSize = <%= parseInt(process.env.MAX_FILE_SIZE) || 100 * 1024 * 1024 %>;
+        if (file.size > maxSize) {
+            alert(`File is too large. Maximum size is ${Math.round(maxSize / 1024 / 1024)}MB`);
+            fileInput.value = '';
+            return;
+        }
+
+        // Show file info
+        fileName.textContent = file.name;
+        fileSize.textContent = formatFileSize(file.size);
+        fileInfo.style.display = 'block';
+        uploadArea.style.display = 'none';
+        uploadBtn.disabled = false;
+
+        // Auto-fill title if empty
+        const titleInput = document.getElementById('title');
+        if (!titleInput.value) {
+            titleInput.value = file.name.replace(/\.[^/.]+$/, ''); // Remove extension
+        }
+    }
+}
+
+function removeFile() {
+    fileInput.value = '';
+    fileInfo.style.display = 'none';
+    uploadArea.style.display = 'block';
+    uploadBtn.disabled = true;
+}
+
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+// Upload form submission with progress
+uploadForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    if (!fileInput.files[0]) {
+        alert('Please select a file to upload');
+        return;
+    }
+
+    const formData = new FormData(this);
+    const modal = document.getElementById('uploadModal');
+    const progressFill = document.getElementById('progressFill');
+    const uploadStatus = document.getElementById('uploadStatus');
+
+    modal.style.display = 'flex';
+    uploadBtn.disabled = true;
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.upload.addEventListener('progress', function(e) {
+        if (e.lengthComputable) {
+            const percentComplete = (e.loaded / e.total) * 100;
+            progressFill.style.width = percentComplete + '%';
+            uploadStatus.textContent = `Uploading... ${Math.round(percentComplete)}%`;
+        }
+    });
+
+    xhr.addEventListener('load', function() {
+        if (xhr.status === 200) {
+            uploadStatus.textContent = 'Upload completed! Redirecting...';
+            setTimeout(() => {
+                window.location.href = '/dashboard';
+            }, 1000);
+        } else {
+            modal.style.display = 'none';
+            uploadBtn.disabled = false;
+            alert('Upload failed. Please try again.');
+        }
+    });
+
+    xhr.addEventListener('error', function() {
+        modal.style.display = 'none';
+        uploadBtn.disabled = false;
+        alert('Upload failed. Please check your connection and try again.');
+    });
+
+    xhr.open('POST', '/videos/upload');
+    xhr.send(formData);
+});
+</script>
+<% }) %>
