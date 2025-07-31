@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Digital Archive Management</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <% if (typeof isAuthenticated !== 'undefined' && isAuthenticated) { %>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="/dashboard">Digital Archive</a>
+            </div>
+            <div class="nav-menu">
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="/videos/upload" class="nav-link">Upload</a>
+                <a href="/dashboard/search" class="nav-link">Search</a>
+                
+                <div class="nav-dropdown">
+                    <button class="nav-link dropdown-toggle">Account</button>
+                    <div class="dropdown-menu">
+                        <a href="/dashboard/account" class="dropdown-item">Profile</a>
+                        <% if (typeof user !== 'undefined' && user && user.role === 'admin') { %>
+                        <a href="/admin" class="dropdown-item">Admin Panel</a>
+                        <% } %>
+                        <a href="/auth/logout" class="dropdown-item">Logout</a>
+                    </div>
+                </div>
+
+                <% if (typeof user !== 'undefined' && user && user.company_id) { %>
+                <div class="nav-dropdown">
+                    <button class="nav-link dropdown-toggle">Company</button>
+                    <div class="dropdown-menu">
+                        <a href="/admin/companies/<%= user.company_id %>" class="dropdown-item">Manage Company</a>
+                    </div>
+                </div>
+                <% } %>
+
+                <div class="nav-dropdown">
+                    <button class="nav-link dropdown-toggle">More</button>
+                    <div class="dropdown-menu">
+                        <a href="/dashboard/the-box" class="dropdown-item">The Box</a>
+                        <a href="/dashboard/contact" class="dropdown-item">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <% } %>
+
+    <main class="<%= (typeof isAuthenticated !== 'undefined' && isAuthenticated) ? 'main-authenticated' : 'main-guest' %>">
+        <!-- Flash Messages -->
+        <% if (typeof messages !== 'undefined' && messages && (messages.success.length > 0 || messages.error.length > 0 || messages.info.length > 0 || messages.warning.length > 0)) { %>
+        <div class="flash-messages">
+            <% messages.success.forEach(message => { %>
+            <div class="alert alert-success">
+                <%= message %>
+                <button class="alert-close">&times;</button>
+            </div>
+            <% }) %>
+            
+            <% messages.error.forEach(message => { %>
+            <div class="alert alert-error">
+                <%= message %>
+                <button class="alert-close">&times;</button>
+            </div>
+            <% }) %>
+            
+            <% messages.info.forEach(message => { %>
+            <div class="alert alert-info">
+                <%= message %>
+                <button class="alert-close">&times;</button>
+            </div>
+            <% }) %>
+            
+            <% messages.warning.forEach(message => { %>
+            <div class="alert alert-warning">
+                <%= message %>
+                <button class="alert-close">&times;</button>
+            </div>
+            <% }) %>
+        </div>
+        <% } %>

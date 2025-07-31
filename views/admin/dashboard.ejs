@@ -1,0 +1,229 @@
+<%- include('../layout', { body: %>
+<div class="page-container">
+    <div class="page-header">
+        <h1>Admin Dashboard</h1>
+        <p>System overview and management</p>
+    </div>
+
+    <div class="admin-stats">
+        <div class="stat-card">
+            <div class="stat-number"><%= stats.totalCompanies %></div>
+            <div class="stat-label">Total Companies</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number"><%= stats.totalVideos %></div>
+            <div class="stat-label">Total Videos</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number"><%= stats.recentVideos.length %></div>
+            <div class="stat-label">Recent Uploads</div>
+        </div>
+    </div>
+
+    <div class="admin-content">
+        <div class="admin-main">
+            <div class="admin-section">
+                <h2>Recent Videos</h2>
+                <% if (stats.recentVideos && stats.recentVideos.length > 0) { %>
+                <div class="recent-videos">
+                    <% stats.recentVideos.forEach(video => { %>
+                    <div class="recent-video-item">
+                        <div class="video-thumbnail-small">
+                            <div class="video-play-small">▶</div>
+                        </div>
+                        <div class="video-details">
+                            <h4><%= video.title || video.original_name %></h4>
+                            <p>Uploaded by <%= video.username %> • <%= new Date(video.upload_date).toLocaleDateString() %></p>
+                            <% if (video.company_name) { %>
+                            <span class="company-tag"><%= video.company_name %></span>
+                            <% } %>
+                        </div>
+                        <div class="video-actions">
+                            <a href="/videos/<%= video.id %>" class="btn btn-small btn-secondary">View</a>
+                        </div>
+                    </div>
+                    <% }) %>
+                </div>
+                <% } else { %>
+                <div class="empty-state">
+                    <p>No recent videos</p>
+                </div>
+                <% } %>
+            </div>
+        </div>
+
+        <div class="admin-sidebar">
+            <div class="admin-nav">
+                <h3>Management</h3>
+                <ul class="admin-nav-list">
+                    <li><a href="/admin/companies" class="admin-nav-link">Manage Companies</a></li>
+                    <li><a href="/admin/videos" class="admin-nav-link">Manage Videos</a></li>
+                    <li><a href="/admin/system" class="admin-nav-link">System Info</a></li>
+                </ul>
+            </div>
+
+            <div class="quick-actions">
+                <h3>Quick Actions</h3>
+                <div class="action-buttons">
+                    <a href="/videos/upload" class="btn btn-primary btn-full">Upload Video</a>
+                    <a href="/dashboard" class="btn btn-secondary btn-full">User Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.admin-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 32px;
+}
+
+.admin-section {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+    margin-bottom: 24px;
+}
+
+.admin-section h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #2d3748;
+}
+
+.recent-videos {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.recent-video-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: #f7fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.video-thumbnail-small {
+    width: 60px;
+    height: 40px;
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.video-play-small {
+    color: white;
+    font-size: 14px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.video-details {
+    flex: 1;
+}
+
+.video-details h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #2d3748;
+}
+
+.video-details p {
+    color: #718096;
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.company-tag {
+    background: #667eea;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.admin-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.admin-nav,
+.quick-actions {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+}
+
+.admin-nav h3,
+.quick-actions h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #2d3748;
+}
+
+.admin-nav-list {
+    list-style: none;
+    padding: 0;
+}
+
+.admin-nav-list li {
+    margin-bottom: 8px;
+}
+
+.admin-nav-link {
+    display: block;
+    padding: 12px 16px;
+    color: #4a5568;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.admin-nav-link:hover {
+    background: #edf2f7;
+    color: #2d3748;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+@media (max-width: 768px) {
+    .admin-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .recent-video-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+}
+</style>
+<% }) %>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Digital Archive Management</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="error-page">
+    <div class="error-container">
+        <div class="error-content">
+            <h1>Oops! Something went wrong</h1>
+            <div class="error-code">
+                <% if (error.status) { %>
+                Error <%= error.status %>
+                <% } else { %>
+                Error
+                <% } %>
+            </div>
+            <div class="error-message">
+                <%= message %>
+            </div>
+            <% if (process.env.NODE_ENV === 'development' && error.stack) { %>
+            <div class="error-details">
+                <h3>Stack Trace (Development Mode)</h3>
+                <pre><%= error.stack %></pre>
+            </div>
+            <% } %>
+            <div class="error-actions">
+                <a href="/dashboard" class="btn btn-primary">Go to Dashboard</a>
+                <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .error-page {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .error-container {
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .error-content {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .error-content h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 16px;
+        }
+        
+        .error-code {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #e53e3e;
+            margin-bottom: 16px;
+        }
+        
+        .error-message {
+            font-size: 1.1rem;
+            color: #4a5568;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+        
+        .error-details {
+            text-align: left;
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 32px;
+        }
+        
+        .error-details h3 {
+            color: #2d3748;
+            margin-bottom: 12px;
+        }
+        
+        .error-details pre {
+            font-size: 12px;
+            color: #4a5568;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        
+        .error-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+    </style>
+</body>
+</html>

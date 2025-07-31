@@ -1,0 +1,124 @@
+<%- include('../layout', { body: %>
+<div class="page-container">
+    <div class="page-header">
+        <h1>Account Settings</h1>
+        <p>Manage your profile and account preferences</p>
+    </div>
+
+    <div class="account-container">
+        <div class="account-form">
+            <form action="/dashboard/account" method="POST">
+                <div class="form-section">
+                    <h3>Personal Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            value="<%= user.username %>"
+                            required
+                            autocomplete="username"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            value="<%= user.email %>"
+                            required
+                            autocomplete="email"
+                        >
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Company Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="company_id">Company</label>
+                        <select id="company_id" name="company_id">
+                            <option value="">Select a company</option>
+                            <% companies.forEach(company => { %>
+                            <option value="<%= company.id %>" <%= user.company_id === company.id ? 'selected' : '' %>>
+                                <%= company.name %>
+                            </option>
+                            <% }) %>
+                        </select>
+                        <small>If your company is not listed, contact an administrator</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Current Role</label>
+                        <input 
+                            type="text" 
+                            value="<%= user.role.charAt(0).toUpperCase() + user.role.slice(1) %>"
+                            readonly
+                            class="readonly"
+                        >
+                        <small>Contact an administrator to change your role</small>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Update Account</button>
+                    <a href="/dashboard" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="account-sidebar">
+            <div class="account-info">
+                <h3>Account Details</h3>
+                <div class="info-item">
+                    <span class="label">Member since:</span>
+                    <span class="value"><%= new Date(user.created_at).toLocaleDateString() %></span>
+                </div>
+                <% if (user.company_name) { %>
+                <div class="info-item">
+                    <span class="label">Company:</span>
+                    <span class="value"><%= user.company_name %></span>
+                </div>
+                <% } %>
+                <div class="info-item">
+                    <span class="label">Role:</span>
+                    <span class="value"><%= user.role.charAt(0).toUpperCase() + user.role.slice(1) %></span>
+                </div>
+                <% if (user.google_id) { %>
+                <div class="info-item">
+                    <span class="label">Login method:</span>
+                    <span class="value">Google OAuth</span>
+                </div>
+                <% } %>
+            </div>
+
+            <div class="account-actions">
+                <h3>Account Actions</h3>
+                <ul class="action-list">
+                    <li><a href="/dashboard">Back to Dashboard</a></li>
+                    <% if (user.role === 'admin') { %>
+                    <li><a href="/admin">Admin Panel</a></li>
+                    <% } %>
+                    <% if (user.company_id) { %>
+                    <li><a href="/admin/companies/<%= user.company_id %>">Manage Company</a></li>
+                    <% } %>
+                    <li><a href="/auth/logout" class="danger">Logout</a></li>
+                </ul>
+            </div>
+
+            <div class="password-section">
+                <h3>Security</h3>
+                <% if (!user.google_id) { %>
+                <p>Password changes are not yet available. Contact support if you need to reset your password.</p>
+                <% } else { %>
+                <p>Your account is secured with Google OAuth. Password management is handled by Google.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+<% }) %>
